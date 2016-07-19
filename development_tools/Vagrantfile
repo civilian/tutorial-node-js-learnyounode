@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# TODO: Add variables to beeing able to configure the host.
+
+# All Vagrant configuration is done below. # Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+    config.vm.box = 'boxcutter/debian81'
+    # Counting up from port 50778 is develop
+    config.vm.network :forwarded_port, guest: 22, host: 50778, id: 'ssh'
+    # apache
+    config.vm.network :forwarded_port, guest: 50779, host: 50779
+
+    
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+    # WE SIMPLIFY HERE THE USE OF THE MACHINE.
+    # We just share the source with the vagrant box in the simplest way possible.
+    config.vm.synced_folder "../../source/",
+        "/home/vagrant/sites/default/source",
+        # We put the minimun permissions necessary
+        owner: "vagrant",
+        mount_options: ["dmode=0755,fmode=0755"]
+
+    # We run the ansible here too for testing
+    config.vm.provision 'ansible' do |ansible|
+
+        ansible.limit = 'development'
+        ansible.inventory_path = '../deploy_tools/provision.and.deploy.ansible/hosts'
+        
+        ansible.playbook = '../deploy_tools/provision.and.deploy.ansible/site.yml'
+
+        # Debug
+        #ansible.verbose = 'vvvv'
+        
+    end
+
+    config.vm.provider :virtualbox do |vb|
+        vb.gui = true
+    end
+
+end

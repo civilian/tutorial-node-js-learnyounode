@@ -1,0 +1,11 @@
+---
+# TODO: Maybe put a changed_when because it always shows changed.
+# TODO: "become" is badly used, should be task by task.
+- hosts: development
+  become: yes
+  vars:
+      host: "{{ inventory_hostname }}"
+  roles:
+    - ansible-role-mysql-for-mock-up
+    - deploy-development-machine
+    - ansible-role-phpmyadmind-for-mock-up
