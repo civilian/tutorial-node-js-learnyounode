@@ -1,3 +1,4 @@
 development_tools/.vagrant/
 .settings/
 .directory
+node_modules/
