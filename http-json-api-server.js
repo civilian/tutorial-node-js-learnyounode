@@ -8,7 +8,7 @@ var server = http.createServer(function (req, res){
     parsedUrl = url.parse(req.url, true);
     ansObj = {};
     var date = new Date(parsedUrl.query.iso);
-    
+
     if(parsedUrl.pathname === '/api/parsetime'){
         ansObj = { "hour": date.getHours(),
             "minute": date.getMinutes(),
@@ -25,4 +25,4 @@ var server = http.createServer(function (req, res){
 
 });
 
-server.listen(process.argv[2]);
+server.listen(Number(process.argv[2]));
